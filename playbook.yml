@@ -1,0 +1,30 @@
+---
+- name: install nginx and index
+  hosts: localhost
+
+  tasks:
+  - name: Show value of var
+    debug:
+      msg: "{{ ansible_facts['os_family'] }}"
+
+  - name: Install Nginx web server
+    apt:
+      name: nginx
+      state: present
+    notify: Restart Nginx
+    tags:
+      - nginx
+    when: ansible_facts['os_family'] != "Darwin"
+  
+  - name: copy index
+    copy:
+      src: index.html
+      dest: /var/www/html/index.html
+      mode: "0644"
+    when: ansible_facts['os_family'] != "Darwin"
+
+  - name: install nginx for macOS
+    community.general.homebrew:
+      name: nginx
+      state: present
+  
