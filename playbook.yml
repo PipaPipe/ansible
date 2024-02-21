@@ -1,0 +1,29 @@
+---
+- name: NMAP hosts and report
+  hosts: nmap_servers
+  remote_user: ubuntu
+  become: true 
+  become_method: sudo
+
+  tasks:
+
+  - name: Install NMAP
+    apt:
+      name: nmap
+      state: latest
+      update_cache: True
+
+  - name: Copy nmap targets list
+    copy:
+      src: ./targets.txt
+      dest: ~/targets.txt
+      force: yes
+      mode: 0644
+
+  - name: Run nmap
+    shell: "nmap -iL ~/targets.txt -p 80 -oG -"
+    register: nmap_result
+
+  - name: Nmap output
+    debug:
+      msg: "{{ nmap_result }}"
