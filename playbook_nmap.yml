@@ -1,5 +1,4 @@
 ---
-<<<<<<< HEAD
 - name: NMAP hosts and report
   hosts: nmap_servers
   remote_user: ubuntu
@@ -28,34 +27,4 @@
   - name: Nmap output
     debug:
       msg: "{{ nmap_result }}"
-=======
-- name: install nginx and index
-  hosts: localhost
 
-  tasks:
-  - name: Show value of var
-    debug:
-      msg: "{{ ansible_facts['os_family'] }}"
-
-  - name: Install Nginx web server
-    apt:
-      name: nginx
-      state: present
-    notify: Restart Nginx
-    tags:
-      - nginx
-    when: ansible_facts['os_family'] != "Darwin"
-  
-  - name: copy index
-    copy:
-      src: index.html
-      dest: /var/www/html/index.html
-      mode: "0644"
-    when: ansible_facts['os_family'] != "Darwin"
-
-  - name: install nginx for macOS
-    community.general.homebrew:
-      name: nginx
-      state: present
-  
->>>>>>> 15efb2d0ceb1aca568cc096de3edba8a63c8cf2c
